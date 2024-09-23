@@ -1,0 +1,1 @@
+web :build/install/diasconnect.seller.com/bin/diasconnect.seller.com
