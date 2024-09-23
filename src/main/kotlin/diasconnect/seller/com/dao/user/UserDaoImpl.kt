@@ -17,6 +17,7 @@ class UserDaoImpl : UserDao {
                 it[UserTable.passwordHash] = hashPassword(passwordHash)
                 it[UserTable.createdAt] = java.time.LocalDateTime.now()
                 it[UserTable.updatedAt] = java.time.LocalDateTime.now()
+                it[UserTable.userRole] = "SELLER"
             }
 
             insertStatement.resultedValues?.singleOrNull()?.let {

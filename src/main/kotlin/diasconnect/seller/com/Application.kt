@@ -6,7 +6,6 @@ import com.google.firebase.FirebaseOptions
 import diasconnect.seller.com.dao.DatabaseFactory
 import diasconnect.seller.com.di.configureDI
 import diasconnect.seller.com.plugins.*
-import diasconnect.seller.com.util.GraphqlConfig
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -21,10 +20,11 @@ fun main() {
 fun Application.module() {
     DatabaseFactory.init()
 //    configureRateLimitedApiKeyAuthentication()
+    configureSerialization()
     configureDI()
     configureSecurity()
     configureSockets()
-    GraphqlConfig()
+    configureRouting()
     this.configureCORS()
 
 //    val serviceAccountPa/th = "/etc/secrets/service_account_key.json"

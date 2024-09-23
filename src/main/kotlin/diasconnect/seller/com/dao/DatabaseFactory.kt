@@ -3,6 +3,8 @@ package diasconnect.seller.com.dao
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import diasconnect.seller.com.dao.product.ProductImagesTable
+import diasconnect.seller.com.dao.product.ProductsTable
 import diasconnect.seller.com.dao.user.UserTable
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -17,6 +19,8 @@ object DatabaseFactory {
         transaction {
             SchemaUtils.create(
                 UserTable,
+                ProductsTable,
+                ProductImagesTable
             )
         }
     }

@@ -65,9 +65,6 @@ dependencies {
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("com.google.cloud:google-cloud-storage:2.2.0")
 
-    implementation("com.expediagroup:graphql-kotlin-ktor-server:7.0.0")
-    implementation("com.expediagroup:graphql-kotlin-schema-generator:8.0.0")
-    implementation("com.graphql-java:graphql-java:22.3")
 
 }
 tasks.withType<org.gradle.jvm.tasks.Jar>() {

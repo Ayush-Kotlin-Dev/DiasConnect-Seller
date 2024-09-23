@@ -21,18 +21,11 @@ data class AuthResponse(
     val errorMessage: String? = null
 )
 
-@Serializable
-data class User(
-    val id: String,
-    val username: String,
-    val email: String,
-    val created: String,
-    val updated: String,
-)
+
 
 @Serializable
 data class AuthResponseData(
-    val id:String,
+    val id:Long,
     val name: String,
     val email: String,
     val token: String,

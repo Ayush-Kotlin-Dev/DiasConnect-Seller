@@ -1,72 +1,104 @@
 package diasconnect.seller.com.repository.auth
 
 import diasconnect.seller.com.dao.user.UserDao
-import diasconnect.seller.com.dao.user.UserRow
 import diasconnect.seller.com.model.AuthResponse
 import diasconnect.seller.com.model.AuthResponseData
 import diasconnect.seller.com.model.SignInParams
 import diasconnect.seller.com.model.SignUpParams
 import diasconnect.seller.com.plugins.generateToken
 import diasconnect.seller.com.security.hashPassword
+import diasconnect.seller.com.util.Response
+import io.ktor.http.*
 
 class AuthRepositoryImpl(
     private val userDao: UserDao
 ) : AuthRepository {
-    override suspend fun signUp(params: SignUpParams): AuthResponse {
-        if (userAlreadyExists(params.email)) {
-            throw IllegalArgumentException("A user with this email already exists")
-        }
 
-        val createdUser = userDao.createUser(params.name, params.email, params.password)
-            ?: throw IllegalStateException("Failed to create user")
-
-        val token = generateToken(createdUser.email)
-
-        return AuthResponse(
-            data = AuthResponseData(
-                id = createdUser.id.toString(),
-                name = createdUser.username,
-                token = token,
-                created = createdUser.createdAt,
-                updated = createdUser.updatedAt,
-                email = createdUser.email
+    override suspend fun signUp(params: SignUpParams): Response<AuthResponse> {
+        return if (userAlreadyExist(params.email)) {
+            Response.Error(
+                code = HttpStatusCode.Conflict,
+                data = AuthResponse(
+                    errorMessage = "A user with this email already exists!"
+                )
             )
-        )
+        } else {
+            val insertedUser = userDao.createUser(username = params.name, email = params.email, passwordHash = hashPassword(params.password))
+
+            if (insertedUser == null) {
+                Response.Error(
+                    code = HttpStatusCode.InternalServerError,
+                    data = AuthResponse(
+                        errorMessage = "Oops, sorry we could not register the user, try later!"
+                    )
+                )
+            } else {
+                Response.Success(
+                    data = AuthResponse(
+                        data = AuthResponseData(
+                            id = insertedUser.id,
+                            name = insertedUser.username,
+                            email = insertedUser.email,
+                            token = generateToken(params.email),
+                            created = insertedUser.createdAt,
+                            updated = insertedUser.updatedAt
+                        )
+                    )
+                )
+            }
+        }
     }
 
-    override suspend fun signIn(params: SignInParams): AuthResponse {
+    override suspend fun signIn(params: SignInParams): Response<AuthResponse> {
         val user = userDao.findUserByEmail(params.email)
-            ?: throw IllegalArgumentException("No user found with this email")
 
-        if (!verifyPassword(params.password, user.passwordHash)) {
-            throw IllegalArgumentException("Invalid password")
-        }
-
-        val token = generateToken(user.email)
-
-        return AuthResponse(
-            data = AuthResponseData(
-                id = user.id.toString(),
-                name = user.username,
-                token = token,
-                created = user.createdAt,
-                updated = user.updatedAt,
-                email = user.email
+        return if (user == null) {
+            Response.Error(
+                code = HttpStatusCode.NotFound,
+                data = AuthResponse(
+                    errorMessage = "Invalid credentials, no user with this email!"
+                )
             )
-        )
+        } else {
+            val hashedPassword = hashPassword(params.password)
+
+            if (user.passwordHash  == hashedPassword) {
+                Response.Success(
+                    data = AuthResponse(
+                        data = AuthResponseData(
+                            id = user.id,
+                            name = user.username,
+                            email = user.email,
+                            token = generateToken(params.email),
+                            created = user.createdAt,
+                            updated = user.updatedAt
+                        )
+                    )
+                )
+            } else {
+                Response.Error(
+                    code = HttpStatusCode.Forbidden,
+                    data = AuthResponse(
+                        errorMessage = "Invalid credentials, wrong password!"
+                    )
+                )
+            }
+        }
     }
 
-    override suspend fun findUserById(id: String): UserRow? {
-        return userDao.findUserById(id.toLong())
-    }
-
-    private suspend fun userAlreadyExists(email: String): Boolean {
+    private suspend fun userAlreadyExist(email: String): Boolean {
         return userDao.findUserByEmail(email) != null
     }
-
-    private fun verifyPassword(inputPassword: String, storedHash: String): Boolean {
-        // Implement password verification logic here
-        // This should compare the hash of the input password with the stored hash
-        return hashPassword(inputPassword) == storedHash
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
