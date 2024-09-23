@@ -64,6 +64,7 @@ dependencies {
     }
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("com.google.cloud:google-cloud-storage:2.2.0")
+    implementation("io.ktor:ktor-server-html-builder:$ktor_version")
 
 
 }

@@ -24,11 +24,11 @@ class ProductDaoImpl : ProductDao {
             // Get the generated product ID
             val productId = insertStatement.resultedValues?.singleOrNull()?.get(ProductsTable.id) ?: return@dbQuery null
 
-            // Insert each image
-            product.images.forEach { image ->
-                ProductImagesTable.insert {
-                    it[ProductImagesTable.productId] = productId // Use the productId from the insert
-                    it[imageUrl] = image // Ensure you're accessing the imageUrl correctly
+            // Batch insert all product images if any
+            if (product.images.isNotEmpty()) {
+                ProductImagesTable.batchInsert(product.images) { image ->
+                    this[ProductImagesTable.productId] = productId
+                    this[ProductImagesTable.imageUrl] = image
                 }
             }
 
@@ -56,6 +56,7 @@ class ProductDaoImpl : ProductDao {
                 }
         }
     }
+
 
 
     override suspend fun findProductByCategoryId(categoryId: Long): List<ProductRow> {
