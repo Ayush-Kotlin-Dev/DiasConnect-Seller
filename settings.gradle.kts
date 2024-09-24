@@ -1,1 +1,1 @@
-rootProject.name = "diasconnect.seller.con"
+rootProject.name = "diasconnect.seller.com"

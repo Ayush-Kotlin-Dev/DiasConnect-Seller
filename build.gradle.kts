@@ -18,7 +18,7 @@ group = "diasconnect.seller.com"
 version = "0.0.1"
 
 application {
-    mainClass.set("instau.seller.com.ApplicationKt")
+    mainClass.set("diasconnect.seller.com.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
