@@ -14,7 +14,7 @@ class UserDaoImpl : UserDao {
                 it[id] = IdGenerator.generateId()
                 it[UserTable.username] = username
                 it[UserTable.email] = email
-                it[UserTable.passwordHash] = hashPassword(passwordHash)
+                it[UserTable.passwordHash] =  passwordHash
                 it[UserTable.createdAt] = java.time.LocalDateTime.now()
                 it[UserTable.updatedAt] = java.time.LocalDateTime.now()
                 it[UserTable.userRole] = "SELLER"

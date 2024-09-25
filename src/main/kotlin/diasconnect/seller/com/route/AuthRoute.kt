@@ -4,14 +4,12 @@ import diasconnect.seller.com.model.AuthResponse
 import diasconnect.seller.com.model.SignInParams
 import diasconnect.seller.com.model.SignUpParams
 import diasconnect.seller.com.repository.auth.AuthRepository
-
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import diasconnect.seller.com.util.Response
 
 fun Routing.authRouting(){
     val repository by inject<AuthRepository>()
