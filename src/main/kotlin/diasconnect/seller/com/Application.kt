@@ -27,18 +27,18 @@ fun Application.module() {
     configureRouting()
     this.configureCORS()
 
-//    val serviceAccountPa/th = "/etc/secrets/service_account_key.json"
-//    try {
-//
-////        val serviceAccountStream = FileInputStream(serviceAccountPath)
-//        val serviceAccountStream = this::class.java.classLoader.getResourceAsStream("service-account.json")
-//        val options = FirebaseOptions.builder()
-//            .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
-//            .setStorageBucket("theinstau-3b0cc.appspot.com")
-//            .build()
-//        FirebaseApp.initializeApp(options)
-//    } catch (e: IOException) {
-//        e.printStackTrace()
-//        throw RuntimeException("Failed to initialize Firebase with service account key", e)
-//    }
+    val serviceAccountPath = "/etc/secrets/service_account_key.json"
+    try {
+
+        val serviceAccountStream = FileInputStream(serviceAccountPath)
+//        val serviceAccountStream = this::class.java.classLoader.getResourceAsStream("diasconnect-seller.json")
+        val options = FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
+            .setStorageBucket("diasconnect-seller.appspot.com")
+            .build()
+        FirebaseApp.initializeApp(options)
+    } catch (e: IOException) {
+        e.printStackTrace()
+        throw RuntimeException("Failed to initialize Firebase with service account key", e)
+    }
 }
