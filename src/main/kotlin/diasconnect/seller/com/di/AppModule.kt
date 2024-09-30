@@ -1,5 +1,7 @@
 package diasconnect.seller.com.di
 
+import diasconnect.seller.com.dao.order.OrderDao
+import diasconnect.seller.com.dao.order.OrderDaoImpl
 import diasconnect.seller.com.dao.product.ProductDao
 import diasconnect.seller.com.dao.product.ProductDaoImpl
 import diasconnect.seller.com.dao.user.UserDao
@@ -17,6 +19,9 @@ val appModule = module {
     single  <AuthRepository>{ AuthRepositoryImpl(get()) }
 
     single <ProductDao>{ ProductDaoImpl() }
-    single <ProductRepository>{ ProductRepositoryImpl(get()) }
+
+    single <ProductRepository>{ ProductRepositoryImpl(get(),get()) }
+
+    single<OrderDao>{ OrderDaoImpl() }
 
 }

@@ -1,13 +1,16 @@
 package diasconnect.seller.com.repository.product
 
+import diasconnect.seller.com.dao.order.OrderDao
 import diasconnect.seller.com.dao.product.ProductDao
 import diasconnect.seller.com.dao.product.ProductRow
 import diasconnect.seller.com.model.*
 import diasconnect.seller.com.util.Response
 import io.ktor.http.*
+import java.time.LocalDateTime
 
 class ProductRepositoryImpl(
-    private val productDao: ProductDao
+    private val productDao: ProductDao,
+    private val orderDao: OrderDao
 ) : ProductRepository {
     override suspend fun addProduct(productTextParams: ProductTextParams): Response<ProductResponse> {
         val productIsAdded = productDao.addProduct(
@@ -92,6 +95,19 @@ class ProductRepositoryImpl(
             )
         }
     }
+
+    override suspend fun getQuantityProductOrder(productId: Long, sellerId: Long, dayBefore: String): Int {
+        val endDate = LocalDateTime.now()
+        val startDate = when (dayBefore) {
+            "7 Day" -> endDate.minusDays(7)
+            "1 Month" -> endDate.minusMonths(1)
+            "3 Months" -> endDate.minusMonths(3)
+            "6 Months" -> endDate.minusMonths(6)
+            else -> null
+        }
+        return orderDao.getQuantityProductOrder(productId, sellerId, startDate, endDate)
+    }
+
     private fun toProduct(productRow: ProductRow): Product {
         return Product(
             id = productRow.id,

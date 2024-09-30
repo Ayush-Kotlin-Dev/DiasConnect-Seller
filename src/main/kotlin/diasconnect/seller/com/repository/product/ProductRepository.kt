@@ -17,4 +17,6 @@ interface ProductRepository {
     suspend fun updateProduct(product: Product): Response<ProductResponse>
 
     suspend fun deleteProduct(id: Long): Response<ProductResponse>
+
+    suspend fun getQuantityProductOrder(productId: Long, sellerId: Long, dayBefore: String): Int
 }

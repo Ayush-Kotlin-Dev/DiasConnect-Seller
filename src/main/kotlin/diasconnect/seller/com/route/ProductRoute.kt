@@ -3,6 +3,7 @@ package diasconnect.seller.com.route
 import com.google.firebase.cloud.StorageClient
 import diasconnect.seller.com.model.Product
 import diasconnect.seller.com.model.ProductParams
+import diasconnect.seller.com.model.ProductQuantity
 import diasconnect.seller.com.model.ProductTextParams
 import diasconnect.seller.com.repository.product.ProductRepository
 import io.ktor.http.*
@@ -145,6 +146,19 @@ fun Routing.ProductRouting() {
                 )
             }
 
+        }
+
+        get("/dashboard/{sellerId}") {
+            val sellerId = call.parameters["sellerId"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid seller ID")
+            val dayBefore = call.request.queryParameters["dayBefore"] ?: "All"
+
+            val products = repository.findProductsBySellerId(sellerId).data.products
+            val productQuantities = products.map { product ->
+                val quantity = repository.getQuantityProductOrder(product.id!!, sellerId, dayBefore)
+                ProductQuantity(product, quantity)
+            }
+
+            call.respond(productQuantities)
         }
     }
 }

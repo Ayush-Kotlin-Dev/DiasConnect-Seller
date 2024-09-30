@@ -3,6 +3,8 @@ package diasconnect.seller.com.dao
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import diasconnect.seller.com.dao.order.OrderItemsTable
+import diasconnect.seller.com.dao.order.OrdersTable
 import diasconnect.seller.com.dao.product.ProductImagesTable
 import diasconnect.seller.com.dao.product.ProductsTable
 import diasconnect.seller.com.dao.user.UserTable
@@ -20,7 +22,9 @@ object DatabaseFactory {
             SchemaUtils.create(
                 UserTable,
                 ProductsTable,
-                ProductImagesTable
+                ProductImagesTable,
+                OrdersTable ,
+                OrderItemsTable
             )
         }
     }

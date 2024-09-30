@@ -55,3 +55,8 @@ data class ProductsResponse (
     val products : List<Product> = emptyList(),
     val message : String,
 )
+data class ProductQuantity(
+    val product: Product,
+    val quantity: Int
+)
+

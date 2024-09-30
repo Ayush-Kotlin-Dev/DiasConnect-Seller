@@ -19,5 +19,7 @@ interface ProductDao {
     suspend fun updateProduct(product: Product): ProductRow?
 
     suspend fun deleteProduct(id: Long): Boolean
+
+
 }
 
