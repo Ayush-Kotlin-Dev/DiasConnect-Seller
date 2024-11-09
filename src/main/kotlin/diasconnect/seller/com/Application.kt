@@ -27,11 +27,11 @@ fun Application.module() {
     configureRouting()
     this.configureCORS()
 
-    val serviceAccountPath = "/etc/secrets/service_account_key.json"
+//    val serviceAccountPath = "/etc/secrets/service_account_key.json"
     try {
 
-        val serviceAccountStream = FileInputStream(serviceAccountPath)
-//        val serviceAccountStream = this::class.java.classLoader.getResourceAsStream("diasconnect-seller.json")
+//        val serviceAccountStream = FileInputStream(serviceAccountPath)
+        val serviceAccountStream = this::class.java.classLoader.getResourceAsStream("diasconnect-seller.json")
         val options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
             .setStorageBucket("diasconnect-seller.appspot.com")

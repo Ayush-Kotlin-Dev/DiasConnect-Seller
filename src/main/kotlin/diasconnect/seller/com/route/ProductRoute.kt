@@ -37,6 +37,7 @@ fun Routing.ProductRouting() {
                             val bucket = StorageClient.getInstance().bucket()
                             val uniqueFileName = "${UUID.randomUUID()}.${fileExtension}"
                             val blob = bucket.create("product_images/$uniqueFileName", fileBytes)
+                            println(blob)
 
                             // Generate a UUID as a token
                             val token = UUID.randomUUID().toString()

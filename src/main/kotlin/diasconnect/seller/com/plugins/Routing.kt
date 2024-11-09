@@ -2,6 +2,7 @@ package diasconnect.seller.com.plugins
 
 import diasconnect.seller.com.route.ProductRouting
 import diasconnect.seller.com.route.authRouting
+import diasconnect.seller.com.route.orderRoutes
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
@@ -60,5 +61,6 @@ fun Application.configureRouting() {
         }
         authRouting()
         ProductRouting()
+        orderRoutes()
     }
 }

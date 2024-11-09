@@ -8,6 +8,8 @@ import diasconnect.seller.com.dao.user.UserDao
 import diasconnect.seller.com.dao.user.UserDaoImpl
 import diasconnect.seller.com.repository.auth.AuthRepository
 import diasconnect.seller.com.repository.auth.AuthRepositoryImpl
+import diasconnect.seller.com.repository.order.OrderRepository
+import diasconnect.seller.com.repository.order.OrderRepositoryImpl
 import diasconnect.seller.com.repository.product.ProductRepository
 import diasconnect.seller.com.repository.product.ProductRepositoryImpl
 import org.koin.dsl.module
@@ -23,5 +25,8 @@ val appModule = module {
     single <ProductRepository>{ ProductRepositoryImpl(get(),get()) }
 
     single<OrderDao>{ OrderDaoImpl() }
+
+
+    single <OrderRepository>{ OrderRepositoryImpl(get()) }
 
 }
